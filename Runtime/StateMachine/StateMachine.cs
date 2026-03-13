@@ -26,6 +26,7 @@ namespace HunterAllen.StateMachine
 
         public StateMachineBase() { }
 
+        ITransition _transition;
         /// <summary>
         /// Check to see if a transition to a next state is available and update the current state.
         /// </summary>
@@ -33,11 +34,11 @@ namespace HunterAllen.StateMachine
         {
             if (CurrentState != null)
             {
-                var transition = GetTransition();
+                _transition = GetTransition();
 
-                if (transition != null)
+                if (_transition != null)
                 {
-                    TransitionToState(transition);
+                    TransitionToState(_transition);
                 }
 
                 CurrentState?.OnUpdateState();
