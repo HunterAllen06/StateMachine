@@ -1,3 +1,4 @@
+[DISCLAIMER](https://gist.github.com/HunterAllen06/100914a4aeb15675c98dd71db1362fa6)
 # StateMachine
 A <a href="https://en.wikipedia.org/wiki/Finite-state_machine">Finite State Machine</a> system for Unity projects.
 
