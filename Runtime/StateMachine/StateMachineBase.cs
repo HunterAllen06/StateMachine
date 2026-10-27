@@ -7,20 +7,21 @@ namespace HunterAllen.StateMachine
     /// Controls and manages the flow and transitions of two or more states.
     /// </summary>
     /// <typeparam name="T">The type of the class that inherits from StateMachine.</typeparam>
-    public class StateMachineBase<T>
+    public class StateMachineBase<T> where T : IStateMachine<T>
     {
         /// <summary>
         /// The current active state.
         /// </summary>
-        public BaseState<T> CurrentState;
+        public IState CurrentState;
         /// <summary>
         /// A list of all states that this state machine manages.
         /// </summary>
-        public List<BaseState<T>> ParallelStates = new();
+        public List<IState> ParallelStates = new();
+
         /// <summary>
         /// A list of transitions that can happen at any time regardless of the current state.
-        /// </summary>
-        public List<Transition> GlobalTransitions = new();
+        /// /// </summary>
+        public List<ITransition> GlobalTransitions = new();
 
         public StateMachineBase() { }
 
@@ -75,9 +76,11 @@ namespace HunterAllen.StateMachine
         /// <param name="to">The state to transition to.</param>
         /// <param name="condition">The condition on which to transition to the given state.</param>
         /// <param name="onTransition">An optional event delegate to invoke upon transition.</param>
-        public virtual void AddGlobalTransition(IState to, ICondition condition, Action onTransition = null)
+        public virtual ITransition AddGlobalTransition(IState to, ICondition condition, Action onTransition = null)
         {
-            GlobalTransitions.Add(new Transition(to, condition, onTransition));
+            ITransition transition = new Transition(to, condition, onTransition);
+            GlobalTransitions.Add(transition);
+            return transition;
         }
 
         /// <summary>

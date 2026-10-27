@@ -8,9 +8,9 @@ namespace HunterAllen.StateMachine
     /// <summary>
     /// Controls and manages the flow and transitions of two or more states in a multiplayer context.
     /// </summary>
-    public abstract class NetworkStateMachine<T> : NetworkBehaviour, IStateMachine<T>
+    public abstract class NetworkStateMachine<T> : NetworkBehaviour, IStateMachine<T> where T : IStateMachine<T>
     {
-        public StateMachineBase<T> StateMachineBase { get; set; }
+        public virtual StateMachineBase<T> StateMachineBase { get; set; }
 
         #region Initialization
         public override void OnStartClient()

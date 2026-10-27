@@ -1,7 +1,7 @@
 namespace HunterAllen.StateMachine
 {
-    public interface IStateMachine<T>
+    public interface IStateMachine<T> where T : IStateMachine<T>
     {
-        public StateMachineBase<T> StateMachineBase { get; set; }
+        public abstract StateMachineBase<T> StateMachineBase { get; set; }
     }
 }

@@ -6,9 +6,9 @@ namespace HunterAllen.StateMachine
     /// <summary>
     /// Controls and manages the flow and transitions of two or more states.
     /// </summary>
-    public abstract class StateMachine<T> : MonoBehaviour, IStateMachine<T>
+    public class StateMachine<T> : MonoBehaviour, IStateMachine<T> where T : IStateMachine<T>
     {
-        public StateMachineBase<T> StateMachineBase { get; set; }
+        public virtual StateMachineBase<T> StateMachineBase { get; set; }
 
         #region Initialization
         void Awake()
@@ -20,7 +20,7 @@ namespace HunterAllen.StateMachine
         /// <summary>
         /// This is where all states should be initialized.
         /// </summary>
-        protected abstract void OnInitialize();
+        protected virtual void OnInitialize() { }
         #endregion
 
         #region Properties and Functions

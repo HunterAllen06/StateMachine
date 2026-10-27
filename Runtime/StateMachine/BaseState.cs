@@ -9,16 +9,17 @@ namespace HunterAllen.StateMachine
     /// (T is passed into this state's constructor function)</para>
     /// </summary>
     /// <typeparam name="T">The state machine this state should refer to as 'context' (T is passed into this state's constructor function)</typeparam>
-    public abstract class BaseState<T> : IState
+    public class BaseState<T> : IState where T : IStateMachine<T>
     {
-        public bool IsStateActive { get; private set; }
-        
+        public bool IsStateActive { get; set; }
+
         public T Context;
         public ICondition DefaultExitCondition;
-        public List<ITransition> Transitions = new();
+        public List<ITransition> Transitions { get; set; } = new();
         public event Action OnEnter;
         public event Action OnExit;
 
+        #region Constructors
         public BaseState(T context)
         {
             Context = context;
@@ -33,7 +34,16 @@ namespace HunterAllen.StateMachine
             Context = context;
             DefaultExitCondition = new Condition(defaultExitCondition);
         }
+        #endregion
 
+        #region Adding/Removing Transitions
+        /// <summary>
+        /// Adds a state that can be transitioned to given the input condition returns true.
+        /// </summary>
+        public void AddTransition(ITransition transition)
+        {
+            Transitions.Add(transition);
+        }
         /// <summary>
         /// Adds a state that can be transitioned to given the input condition returns true.
         /// </summary>
@@ -68,13 +78,15 @@ namespace HunterAllen.StateMachine
         {
             Transitions.Clear();
         }
+        #endregion
 
+        #region Callbacks
         /// <summary>
         /// Called when this state is entered.
         /// </summary>
         public virtual void OnEnterState() { }
         /// <summary>
-        /// Called when this state is exited.
+        /// Called in Update if this state is active.
         /// </summary>
         public virtual void OnUpdateState() { }
         /// <summary>
@@ -82,7 +94,7 @@ namespace HunterAllen.StateMachine
         /// </summary>
         public virtual void OnFixedUpdateState() { }
         /// <summary>
-        /// Called in Update if this state is active.
+        /// Called when this state is exited.
         /// </summary>
         public virtual void OnExitState() { }
 
@@ -98,5 +110,6 @@ namespace HunterAllen.StateMachine
             OnExit?.Invoke();
             OnExitState();
         }
+        #endregion
     }
 }
